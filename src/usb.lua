@@ -80,6 +80,12 @@ function dev:worker()
 	inputs.buttons = {}
 	--}
 
+	inputs.buttons.a = (inputs.a < 200) and 0 or 1
+	inputs.buttons.a_hard = (inputs.a < 100) and 0 or 1
+
+	inputs.buttons.b = (inputs.b < 200) and 0 or 1
+	inputs.buttons.b_hard = (inputs.b < 100) and 0 or 1
+
 	inputs.buttons.c = vr00_1 & 1
 	inputs.buttons.d = (vr00_1 >> 1) & 1
 	inputs.buttons.hat_press = (vr00_1 >> 2) & 1
@@ -103,7 +109,7 @@ function dev:worker()
 	inputs.buttons.dpad2_bottom = (vr01_2 >> 6) & 1
 	inputs.buttons.dpad2_left = (vr01_2 >> 7) & 1
 
-	--[=[print("stick", inputs.stick.x, inputs.stick.y)
+	print("stick", inputs.stick.x, inputs.stick.y)
 	print("hat", inputs.hat.x, inputs.hat.y)
 	print("rudder", inputs.rudder)
 	print("throttle", inputs.throttle)
@@ -120,7 +126,7 @@ function dev:worker()
 		end
 	end
 	print(table.unpack(things))
-	print("================================")]=]
+	print("================================")
 	return inputs
 end
 
