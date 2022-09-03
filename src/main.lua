@@ -9,4 +9,8 @@ local vendor_id, product_id = 0x06d3, 0x0f10
 
 local device, devhandle = ctx:open_device(vendor_id, product_id)
 local dev = usblib.start(device, devhandle)
-while true do dev:worker() end
+local update = require("uinput")
+while true do
+	local state = dev:worker()
+	update(state)
+end

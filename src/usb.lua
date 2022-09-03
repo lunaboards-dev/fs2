@@ -109,7 +109,7 @@ function dev:worker()
 	inputs.buttons.dpad2_bottom = (vr01_2 >> 6) & 1
 	inputs.buttons.dpad2_left = (vr01_2 >> 7) & 1
 
-	print("stick", inputs.stick.x, inputs.stick.y)
+	--[=[print("stick", inputs.stick.x, inputs.stick.y)
 	print("hat", inputs.hat.x, inputs.hat.y)
 	print("rudder", inputs.rudder)
 	print("throttle", inputs.throttle)
@@ -126,7 +126,7 @@ function dev:worker()
 		end
 	end
 	print(table.unpack(things))
-	print("================================")
+	print("================================")]=]
 	return inputs
 end
 
