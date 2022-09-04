@@ -24,9 +24,12 @@ gp:useKey(e.BTN_Y)
 gp:useKey(e.BTN_C)
 gp:useKey(e.BTN_BASE)
 gp:useKey(e.BTN_THUMBL)
-gp:useKey(e.BTN_TRIGGER_HAPPY)
 gp:useKey(e.BTN_TRIGGER_HAPPY1)
 gp:useKey(e.BTN_TRIGGER_HAPPY2)
+gp:useKey(e.BTN_TRIGGER_HAPPY3)
+gp:useKey(e.BTN_TRIGGER_HAPPY4)
+gp:useKey(e.BTN_TRIGGER_HAPPY5)
+gp:useKey(e.BTN_TRIGGER_HAPPY6)
 
 gp:init("HORI FlightStick 2")
 
@@ -39,13 +42,16 @@ local button_map = {
 	trigger = e.BTN_TRIGGER,
 	sw1 = e.BTN_BASE,
 	button_st = e.BTN_THUMBL,
-	hat_press = e.BTN_THUMB
+	hat_press = e.BTN_THUMB,
+	dpad3_right = e.BTN_TRIGGER_HAPPY4,
+	dpad3_middle = e.BTN_TRIGGER_HAPPY5,
+	dpad3_left = e.BTN_TRIGGER_HAPPY6
 }
 
 local mode_map = {
-	e.BTN_TRIGGER_HAPPY,
 	e.BTN_TRIGGER_HAPPY1,
-	e.BTN_TRIGGER_HAPPY2
+	e.BTN_TRIGGER_HAPPY2,
+	e.BTN_TRIGGER_HAPPY3
 }
 
 local function hat_axis(left, right)
@@ -59,13 +65,22 @@ local hat_map = {
 	[e.ABS_HAT2Y] = {"dpad2_top", "dpad2_bottom"}
 }
 
+local last_mode
+
 local function update(state)
 	for k, v in pairs(button_map) do
 		gp:write(e.EV_KEY, v, 1-state.buttons[k])
 	end
-	for i=1, #mode_map do
-		gp:write(e.EV_KEY, mode_map[i], state.mode_select == i and 1 or 0)
+	if not last_mode then last_mode = state.mode_select end
+	if state.mode_select ~= last_mode and state.mode_select ~= 0 then
+		gp:write(e.EV_KEY, mode_map[state.mode_select], 1)
+		gp:write(e.EV_SYN, e.SYN_REPORT, 0)
+		gp:write(e.EV_KEY, mode_map[state.mode_select], 0)
+		last_mode = state.mode_select
 	end
+	--[[for i=1, #mode_map do
+		gp:write(e.EV_KEY, mode_map[i], state.mode_select == i and 1 or 0)
+	end]]
 	for k, v in pairs(hat_map) do
 		gp:write(e.EV_ABS, k, hat_axis(state.buttons[v[1]], state.buttons[v[2]]))
 	end
